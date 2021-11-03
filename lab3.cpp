@@ -375,6 +375,7 @@ int ConstDef()
 	{
 		num++;
 	}
+	int j=num;
 	if((letter[num]>="a"&&letter[num]<="z")||(letter[num]>="A"&&letter[num]<="Z")||letter[num]=="_")
 	{
 		int a = judgeword(letter[num],num);
@@ -420,11 +421,13 @@ int ConstDef()
 		}
 		else
 		{
+			num-j;
 			return 0;
 		}
 	}
 	else
 	{
+		num=j;
 		return 0;
 	}
 }
@@ -434,6 +437,7 @@ int VarDecl()
 	{
 		num++;
 	}
+	int j=num;
 	if((letter[num]>="a"&&letter[num]<="z")||(letter[num]>="A"&&letter[num]<="Z")||letter[num]=="_")
 	{
 		int a = judgeword(letter[num],num);
@@ -535,11 +539,13 @@ int VarDecl()
 		}
 		else
 		{
+			num=j;
 			return 0;
 		}
 	}
 	else
 	{
+		num=j;
 		return 0;
 	}
 }
@@ -551,6 +557,7 @@ int Vardef()
 	{
 		num++;
 	}
+	int j=num;
 	if((letter[num]>="a"&&letter[num]<="z")||(letter[num]>="A"&&letter[num]<="Z")||letter[num]=="_")
 	{
 		int a = judgeword(letter[num],num);
@@ -590,11 +597,13 @@ int Vardef()
 		}
 		else
 		{
+			num=j;
 			return 0;
 		}
 	}
 	else
 	{
+		num=j;
 		return 0;
 	}
 }
@@ -852,12 +861,14 @@ int Exp()
 	{
 		num++;
 	}
+	int j=num;
 	if(AddExp()>0)
 	{
 		return 1;
 	}
 	else
 	{
+		num=j;
 		return 0;
 	}
  } 
@@ -867,6 +878,7 @@ int AddExp()
 	{
 		num++;
 	}
+	int j=num;
 	if(MulExp()>0)
 	{
 		while(letter[num]=="block")
@@ -895,7 +907,10 @@ int AddExp()
 		return 1;
 	}
 	else
+	{
+		num=j;
 		return 0;
+	}
 }
 int MulExp()
 {
@@ -903,6 +918,7 @@ int MulExp()
 	{
 		num++;
 	}
+	int j=num;
 	if(UnaryExp()>0)
 	{
 		while(letter[num]=="block")
@@ -952,7 +968,10 @@ int MulExp()
 		return 1;
 	}
 	else
+	{
+		num=j;
 		return 0;
+	}
  } 
 int PrimaryExp(int opt)
 {
@@ -1223,6 +1242,7 @@ int FuncRParams()
 	{
 		num++;
 	}
+	int j=num;
 	if(Exp()>0)
 	{
 		while(top2!=-1)
@@ -1253,6 +1273,7 @@ int FuncRParams()
 	}
 	else
 	{
+		num=j;
 		return 0;
 	}
 }
