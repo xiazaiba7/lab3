@@ -960,6 +960,7 @@ int PrimaryExp(int opt)
 	{
 		num++;
 	}
+	int x=num;
 	if(letter[num]=="(")
 	{
 		op[++top2]='(';
@@ -1008,6 +1009,7 @@ int PrimaryExp(int opt)
 		}
 		else
 		{
+			num=x;
 			return 0;
 		}
 		
@@ -1055,6 +1057,7 @@ int PrimaryExp(int opt)
 		}
 		else
 		{
+			num=x;
 			return 0;
 		}
 	}
