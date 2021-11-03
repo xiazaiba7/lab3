@@ -761,6 +761,7 @@ int Stmt()
 			}
 			else
 			{
+				printf("%d ",a);
 				printf("9\n");
 				num = j;
 				return 0;
