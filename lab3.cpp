@@ -252,6 +252,7 @@ int Blockitem()
 			return 2;
 		else
 		{
+			printf("%s",temp.c_str());
 			printf("1\n");
 			return 0;
 		}
@@ -265,6 +266,7 @@ int Decl()
 			return 1;
 		else
 		{	
+			printf("%s",temp.c_str());
 			printf("2\n"); 
 			return 0;
 		}
@@ -275,6 +277,7 @@ int Decl()
 			return 2;
 		else
 		{
+			printf("%s",temp.c_str());
 			printf("3\n");
 			return 0;
 		}
@@ -748,6 +751,7 @@ int Stmt()
 				}
 				else
 				{
+					printf("%s",temp.c_str());
 					printf("8\n");
 					top1=-1;
 					top2=-1;
@@ -764,6 +768,7 @@ int Stmt()
 		}
 		else
 		{
+			printf("%s",temp.c_str());
 			printf("10\n");
 			num=j;
 			return 0;
@@ -1283,11 +1288,6 @@ int FuncDef()
 						}
 						while(letter[num]=="block")
 							num++;
-						while(Blockitem()>0)//return
-						{
-							while(letter[num]=="block")
-								num++;	
-						}
 						if(symbol(letter[num])==9)
 						{
 							return 1;
