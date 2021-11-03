@@ -1264,12 +1264,15 @@ int FuncDef()
 							while(letter[num]=="block")
 								num++;	
 						}
+						while(letter[num]=="block")
+							num++;
 						if(symbol(letter[num])==9)
 						{
 							return 1;
 						}
 						else
 						{
+							printf("%s",letter[num].c_str());
 							printf("这里有错\n");
 							return 0;
 						 } 
