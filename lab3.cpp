@@ -263,14 +263,20 @@ int Decl()
 		if(ConstDecl()>0)
 			return 1;
 		else
+		{	
+			printf("1\n"); 
 			return 0;
+		}
 	}
 	else if(letter[num]=="i")
 	{
 		if(VarDecl()>0)
 			return 2;
 		else
+		{
+			printf("2\n")
 			return 0;
+		}
 	}
 	else
 		return 0;
