@@ -421,7 +421,7 @@ int ConstDef()
 		}
 		else
 		{
-			num-j;
+			num=j;
 			return 0;
 		}
 	}
@@ -561,7 +561,6 @@ int Vardef()
 	if((letter[num]>="a"&&letter[num]<="z")||(letter[num]>="A"&&letter[num]<="Z")||letter[num]=="_")
 	{
 		int a = judgeword(letter[num],num);
-		int flag=0;
 		if(a==3)
 		{
 			varname=temp;
@@ -606,6 +605,7 @@ int Vardef()
 		num=j;
 		return 0;
 	}
+	return 0;
 }
 int Stmt()
 {
@@ -793,7 +793,6 @@ int Number(string s,int n)
 {
 	stringstream ss1;
 	int j=n+1;
-	int flag=1;
 	int ret;
 	if((s=="0"&&letter[j]=="x"||s=="0"&&letter[j]=="X")&&letter[j]!="block")//十六进制 
 	{
@@ -1104,6 +1103,7 @@ int PrimaryExp(int opt)
 	{
 		return 0;
 	}
+	return 0;
 }
 int UnaryExp()
 {
@@ -1331,7 +1331,6 @@ int FuncDef()
 }
 int main(int argc,char **argv){
 	char w;
- 	int i,j;
 
 	in = fopen(argv[1],"r");
 	out = fopen(argv[2],"w");
