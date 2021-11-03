@@ -1111,7 +1111,10 @@ int UnaryExp()
 					if(FuncRParams()>0)
 					{
 						if(shuzi[0].type==1)
-							fprintf(out,"          call void @putint(i32 *%s)\n",shuzi[0].name2.c_str());
+						{
+							fprintf(out,"          \%%%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          call void @putint(i32 \%%%d)\n",numb);
+						}
 						else if(shuzi[0].type==0)
 							fprintf(out,"          call void @putint(i32 %d)\n",shuzi[0].value);
 						else if(shuzi[0].type==2)
@@ -1130,7 +1133,10 @@ int UnaryExp()
 					if(FuncRParams()>0)
 					{
 						if(shuzi[0].type==1)
-							fprintf(out,"          call void @putch(i32 *%s)\n",shuzi[0].name2.c_str());
+						{
+							fprintf(out,"          \%%%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          call void @putch(i32 \%%%d)\n",numb);
+						}
 						else if(shuzi[0].type==0)
 							fprintf(out,"          call void @putch(i32 %d)\n",shuzi[0].value);
 						else if(shuzi[0].type==2)
