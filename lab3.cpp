@@ -1273,6 +1273,10 @@ int main(int argc,char **argv){
 	out = fopen(argv[2],"w");
  	int flag=0;
 	char line[105];
+	fprintf(out,"declare i32 @getint()\n");
+	fprintf(out,"declare void @putint(i32)\n");
+	fprintf(out,"declare i32 @getch()\n");
+	fprintf(out,"declare void @putch(i32)\n");
 	while(fgets(line,100,in)!=NULL)
  	{
  		int len=strlen(line);
