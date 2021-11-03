@@ -1191,6 +1191,7 @@ int FuncRParams()
 		while(top2!=-1)
 		{
 			operate(op[top2]);
+			top2--;
 		}
 		while(letter[num]=="block")
 		{
