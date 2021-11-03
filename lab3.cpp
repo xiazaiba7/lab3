@@ -459,7 +459,8 @@ int VarDecl()
 					}
 					else if(shuzi[0].type==1)
 					{
-						fprintf(out,"          store i32 *%s, i32* %s\n",shuzi[0].name2.c_str(),idents[top3].name2.c_str());
+						fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+						fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[top3].name2.c_str());
 					}
 					idents[top3].value=shuzi[0].value;//这里可能要修改 
 				}
@@ -500,7 +501,8 @@ int VarDecl()
 						}
 						else if(shuzi[0].type==1)
 						{
-							fprintf(out,"          store i32 *%s, i32* %s\n",shuzi[0].name2.c_str(),idents[top3].name2.c_str());
+							fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[top3].name2.c_str());
 						}
 						idents[top3].value=shuzi[0].value;//这里可能要修改 
 					}
@@ -719,7 +721,8 @@ int Stmt()
 						}
 						else if(shuzi[0].type==1)
 						{
-							fprintf(out,"          store i32 *%s, i32* %s\n",shuzi[0].name2.c_str(),idents[biao].name2.c_str());
+							fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[biao].name2.c_str());
 						}
 						idents[biao].value=shuzi[0].value;
 						return 1;
