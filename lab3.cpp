@@ -605,7 +605,7 @@ int Vardef()
 		num=j;
 		return 0;
 	}
-	return 0;
+	return 1;
 }
 int Stmt()
 {
@@ -1103,7 +1103,7 @@ int PrimaryExp(int opt)
 	{
 		return 0;
 	}
-	return 0;
+	return 1;
 }
 int UnaryExp()
 {
