@@ -1080,7 +1080,7 @@ int UnaryExp()
 				}
 				if(a==10&&letter[num]==")")
 				{
-					printf("          \%%%d = call i32 @getint()\n",++numb);
+					fprintf(out,"          \%%%d = call i32 @getint()\n",++numb);
 					char ch[50];
 					sprintf(ch,"\%%%d",numb);
 					ident newident;
@@ -1094,7 +1094,7 @@ int UnaryExp()
 				}
 				else if(a==11&&letter[num]==")")
 				{
-					printf("          \%%%d = call i32 @getch()\n",++numb);
+					fprintf(out,"          \%%%d = call i32 @getch()\n",++numb);
 					char ch[50];
 					sprintf(ch,"\%%%d",numb);
 					ident newident;
