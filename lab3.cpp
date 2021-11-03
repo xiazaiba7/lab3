@@ -252,7 +252,6 @@ int Blockitem()
 			return 2;
 		else
 		{
-			num = j;
 			return 0;
 		}
 	}
