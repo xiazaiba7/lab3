@@ -252,6 +252,7 @@ int Blockitem()
 			return 2;
 		else
 		{
+			printf("1\n");
 			return 0;
 		}
 	}
@@ -264,7 +265,7 @@ int Decl()
 			return 1;
 		else
 		{	
-			printf("1\n"); 
+			printf("2\n"); 
 			return 0;
 		}
 	}
@@ -274,7 +275,7 @@ int Decl()
 			return 2;
 		else
 		{
-			printf("2\n");
+			printf("3\n");
 			return 0;
 		}
 	}
@@ -625,7 +626,10 @@ int Stmt()
 			return 2;
 		}
 		else
+		{
+			printf("4\n");
 			return 0;
+		}
 	}
 	num=j;
 	top1=-1;
@@ -662,11 +666,13 @@ int Stmt()
 				}
 				else
 				{
+					printf("5\n");
 					return 0;
 				}
 			}
 			else
 			{
+				printf("6\n");
 				num = j;
 				return 0;
 			}
@@ -736,11 +742,13 @@ int Stmt()
 					}
 					else
 					{
+						printf("7\n");
 						return 0;
 					}
 				}
 				else
 				{
+					printf("8\n");
 					top1=-1;
 					top2=-1;
 					num = j;
@@ -749,17 +757,20 @@ int Stmt()
 			}
 			else
 			{
+				printf("9\n");
 				num = j;
 				return 0;
 			}
 		}
 		else
 		{
+			printf("10\n");
 			num=j;
 			return 0;
 		}
 	}
 	num=j;
+	printf("11\n");
 	return 0;
 }
 int Number(string s,int n)
@@ -1272,6 +1283,11 @@ int FuncDef()
 						}
 						while(letter[num]=="block")
 							num++;
+						while(Blockitem()>0)//return
+						{
+							while(letter[num]=="block")
+								num++;	
+						}
 						if(symbol(letter[num])==9)
 						{
 							return 1;
