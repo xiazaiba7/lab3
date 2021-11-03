@@ -128,6 +128,7 @@ int VarDecl();
 int Stmt(); 
 int Decl();
 int Blockitem();
+int FuncRParams();
 int symbol(string s)
 {
 	if(s=="(")
@@ -194,6 +195,18 @@ int symbol(string s)
  	}
  	else if(s=="const")
  		return 7;
+ 	else if(s=="getint")
+ 		return 10;
+ 	else if(s=="getch")
+ 		return 11;
+ 	else if(s=="getarray")
+ 		return 12;
+ 	else if(s=="putint")
+ 		return 13;
+ 	else if(s=="putch")
+ 		return 14;
+ 	else if(s=="putarray")
+ 		return 15;
  	else
  	{
  		temp=s;
@@ -1012,6 +1025,107 @@ int UnaryExp()
 	{
 		num++;
 	}
+	int j=num;
+	if(letter[num]>="a"&&letter[num]<="z"||letter[num]>="A"&&letter[num]<="Z"||letter[num]=="_")
+	{
+		int a = judgeword(letter[num],num);
+		if(a>=10&&a<=15)
+		{
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(letter[num]=="(")
+			{
+				num++;
+				while(letter[num]=="block")
+				{
+					num++;
+				}
+				if(a==10&&letter[num]==")")
+				{
+					printf("          \%%%d = call i32 @getint()\n",++numb);
+					char ch[50];
+					sprintf(ch,"\%%%d",numb);
+					ident newident;
+					newident.value=0;
+					newident.name="";
+					newident.name2=ch;
+					newident.type=2;
+					shuzi[++top1]=newident;
+					num++;
+					return 2;
+				}
+				else if(a==11&&letter[num]==")")
+				{
+					printf("          \%%%d = call i32 @getch()\n",++numb);
+					char ch[50];
+					sprintf(ch,"\%%%d",numb);
+					ident newident;
+					newident.value=0;
+					newident.name="";
+					newident.name2=ch;
+					newident.type=2;
+					shuzi[++top1]=newident;
+					num++;
+					return 2;
+				}
+				else if(a==13)
+				{
+					if(FuncRParams()>0)
+					{
+						if(shuzi[0].type==1)
+							fprintf(out,"          call void @putint(i32 *%s)\n",shuzi[0].name2.c_str());
+						else if(shuzi[0].type==0)
+							fprintf(out,"          call void @putint(i32 %d)\n",shuzi[0].value);
+						else if(shuzi[0].type==2)
+							fprintf(out,"          call void @putint(i32 %s)\n",shuzi[0].name2.c_str());
+						num++;
+						return 2;
+					}
+					else
+					{
+						return 0;
+					}
+					
+				}
+				else if(a==14)
+				{
+					if(FuncRParams()>0)
+					{
+						if(shuzi[0].type==1)
+							fprintf(out,"          call void @putch(i32 *%s)\n",shuzi[0].name2.c_str());
+						else if(shuzi[0].type==0)
+							fprintf(out,"          call void @putch(i32 %d)\n",shuzi[0].value);
+						else if(shuzi[0].type==2)
+							fprintf(out,"          call void @putch(i32 %s)\n",shuzi[0].name2.c_str());
+						num++;
+						return 2;
+					}
+					else
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			num=j;
+		}
+	}
+	else
+	{
+		num=j;
+	}
 	int opt=1;
 	while(letter[num]=="+"||letter[num]=="-")
 	{
@@ -1029,6 +1143,44 @@ int UnaryExp()
 		return 1;
 	else
 		return 0;
+}
+int FuncRParams()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	if(Exp()>0)
+	{
+		while(top2!=-1)
+		{
+			operate(op[top2]);
+		}
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		while(letter[num]==",")
+		{
+			num++;
+			if(Exp()>0)
+			{
+				while(letter[num]=="block")
+				{
+					num++;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 int FuncDef()
 {
