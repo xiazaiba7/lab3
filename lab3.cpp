@@ -274,7 +274,7 @@ int Decl()
 			return 2;
 		else
 		{
-			printf("2\n")
+			printf("2\n");
 			return 0;
 		}
 	}
