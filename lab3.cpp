@@ -12,8 +12,8 @@ int tempv;
 string varname;
 string constname;
 FILE *in,*out;
-string letter[1000];
-char op[200];
+string letter[100000];
+char op[20000];
 struct ident {
 	string name;
 	string name2;
@@ -953,8 +953,23 @@ int PrimaryExp(int opt)
 					operate(op[top2]);
 					top2--;
 				}
-				shuzi[top1].value=shuzi[top1].value*opt;
 				top2--;
+				if(opt==-1)
+				{
+				
+					op[++top2]='(';
+					ident newident=shuzi[top1];
+					shuzi[++top1]=newident;
+					shuzi[top1-1].type=0;
+					shuzi[top1-1].value=0;
+					op[++top2]='-';
+					while(op[top2]!='(')
+					{
+						operate(op[top2]);
+						top2--;
+					}
+					top2--;
+				}
 				num++;
 				return 1;
 			}
@@ -979,7 +994,28 @@ int PrimaryExp(int opt)
 			{
 				if(idents[i].name==temp)
 				{
-					shuzi[++top1]=idents[i];
+					if(opt==-1)
+					{
+						op[++top2]='(';
+						ident newident;
+						newident.type=0;
+						newident.value=0;
+						newident.name="";
+						newident.name2="";
+						shuzi[++top1]=newident;
+						op[++top2]='-';
+						shuzi[++top1]=idents[i];
+						while(op[top2]!='(')
+						{
+							operate(op[top2]);
+							top2--;
+						}
+						top2--;
+					}
+					else if(opt==1)
+					{
+						shuzi[++top1]=idents[i];
+					}
 					flag=1;
 					break;
 				}
