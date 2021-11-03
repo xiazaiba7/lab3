@@ -9,6 +9,7 @@ int length=0;
 int num;
 int numb=0;
 int tempv;
+char line[1050];
 string varname;
 string constname;
 FILE *in,*out;
@@ -20,8 +21,8 @@ struct ident {
 	int value;
 	int type; //1表示变量，0表示常量, 2表示变量的值（1是指针） 
 };
-ident idents[100]; 
-ident shuzi[200];
+ident idents[1000]; 
+ident shuzi[2000];
 int top1=-1,top2=-1,top3=-1;
 string temp;
 int tempvalue;
@@ -1290,12 +1291,12 @@ int main(int argc,char **argv){
 	in = fopen(argv[1],"r");
 	out = fopen(argv[2],"w");
  	int flag=0;
-	char line[105];
+	
 	fprintf(out,"declare i32 @getint()\n");
 	fprintf(out,"declare void @putint(i32)\n");
 	fprintf(out,"declare i32 @getch()\n");
 	fprintf(out,"declare void @putch(i32)\n");
-	while(fgets(line,100,in)!=NULL)
+	while(fgets(line,1000,in)!=NULL)
  	{
  		int len=strlen(line);
 	 	for(int k=0;line[k]>0;k++)
