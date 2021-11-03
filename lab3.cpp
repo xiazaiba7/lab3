@@ -769,7 +769,8 @@ int Stmt()
 		}
 		else
 		{
-			printf("%s",temp.c_str());
+			printf("%d ",a);
+			printf("%s ",temp.c_str());
 			printf("10\n");
 			num=j;
 			return 0;
