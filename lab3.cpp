@@ -180,33 +180,33 @@ int symbol(string s)
 		}
   	}
   	num=j;
- 	if(s=="int")
+ 	if(strcmp(s.c_str(),"int")==0)
  	{
  		return 1;
  	}
- 	else if(s=="main")
+ 	else if(strcmp(s.c_str(),"main")==0)
  	{
  		fprintf(out,"@main");
  		return 2;
  	}
- 	else if(s=="return")
+ 	else if(strcmp(s.c_str(),"return")==0)
  	{
 	 	
  		return 6;
  	}
- 	else if(s=="const")
+ 	else if(strcmp(s.c_str(),"const")==0)
  		return 7;
- 	else if(s=="getint")
+ 	else if(strcmp(s.c_str(),"getint")==0)
  		return 10;
- 	else if(s=="getch")
+ 	else if(strcmp(s.c_str(),"getch")==0)
  		return 11;
- 	else if(s=="getarray")
+ 	else if(strcmp(s.c_str(),"getarray")==0)
  		return 12;
- 	else if(s=="putint")
+ 	else if(strcmp(s.c_str(),"putint")==0)
  		return 13;
- 	else if(s=="putch")
+ 	else if(strcmp(s.c_str(),"putch")==0)
  		return 14;
- 	else if(s=="putarray")
+ 	else if(strcmp(s.c_str(),"putarray")==0)
  		return 15;
  	else
  	{
