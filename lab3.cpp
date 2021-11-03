@@ -9,6 +9,7 @@ int length=0;
 int num;
 int numb=0;
 int tempv;
+bool constdef=false;
 char line[1050];
 string varname;
 string constname;
@@ -400,6 +401,7 @@ int ConstDef()
 				{
 					num++;
 				}
+				constdef=true;
 				if(Exp()>0)
 				{
 					while(top2!=-1)
@@ -407,6 +409,7 @@ int ConstDef()
 						operate(op[top2]);
 						top2--;
 					}
+					constdef=false;
 					return 1;
 				}
 				else
@@ -1042,6 +1045,10 @@ int PrimaryExp(int opt)
 			{
 				if(idents[i].name==temp)
 				{
+					if(idents[i].type==1&&constdef==true)
+					{
+						return 0;
+					}
 					if(opt==-1)
 					{
 						op[++top2]='(';
