@@ -492,15 +492,15 @@ int VarDecl()
 					{
 						if(shuzi[0].type==0)
 						{
-							fprintf(out,"          store i32 %d, i32 %d\n",numb,shuzi[0].value);
+							fprintf(out,"          store i32 %d, i32 *%s\n",shuzi[0].value,idents[top3].name2.c_str());
 						}
 						else if(shuzi[0].type==2)
 						{
-							fprintf(out,"          store i32 %d, i32 %s\n",numb,shuzi[0].name2.c_str());
-						}	
+							fprintf(out,"          store i32 %s, i32 *%s\n",shuzi[0].name2.c_str(),idents[top3].name2.c_str());
+						}
 						else if(shuzi[0].type==1)
 						{
-							fprintf(out,"          store i32 %d, i32 *%s\n",numb,shuzi[0].name2.c_str());
+							fprintf(out,"          store i32 *%s, i32 *%s\n",shuzi[0].name2.c_str(),idents[top3].name2.c_str());
 						}
 						idents[top3].value=shuzi[0].value;//这里可能要修改 
 					}
