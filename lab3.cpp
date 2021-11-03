@@ -321,25 +321,26 @@ int ConstDecl()
 						idents[top3].value=shuzi[0].value;
 						idents[top3].name2="";
 					}
+					while(letter[num]=="block")
+					{
+						num++;
+					}
+					if(letter[num]==";")
+					{
+						num++;
+						return 1;
+					}
+					else
+					{
+						return 0;
+					}
 					
 				}
 				else
 				{
 					return 0;
 				}
-				while(letter[num]=="block")
-				{
-					num++;
-				}
-				if(letter[num]==";")
-				{
-					num++;
-					return 1;
-				}
-				else
-				{
-					return 0;
-				}
+				
 			}
 			else
 			{
@@ -1267,6 +1268,11 @@ int FuncDef()
 						{
 							return 1;
 						}
+						else
+						{
+							printf("这里有错\n");
+							return 0;
+						 } 
 					}
 				}
 			}	
