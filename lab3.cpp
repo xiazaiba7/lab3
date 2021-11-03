@@ -1338,10 +1338,12 @@ int main(int argc,char **argv){
 	int fd=FuncDef();
 	if(fd>0)
 	{
+		printf("0\n");
 		return 0;
 	}
 	else
 	{
+		printf("1\n");
 		return 1;
 	}
 }
