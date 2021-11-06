@@ -7,7 +7,7 @@
 using namespace std;
 int length=0; 
 int num;
-int numb=0;
+int numb=-1;
 int tempv;
 bool constdef=false;
 char line[1050];
@@ -33,15 +33,15 @@ int operate(char c)
 	char ch[10];
 	if(shuzi[top1].type==1)//是变量 
 	{
-		fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[top1].name2.c_str());
-		sprintf(ch,"\%%%d",numb);
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[top1].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1].name2=ch;
 		shuzi[top1].type=2; 
 	}
 	if(shuzi[top1-1].type==1)//是变量
 	{
-		fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[top1-1].name2.c_str());
-		sprintf(ch,"\%%%d",numb);
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[top1-1].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 	} 
@@ -66,51 +66,205 @@ int operate(char c)
 	
 	if(c=='+')
 	{
-		fprintf(out,"          \%%%d = add i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
+		fprintf(out,"          %%x%d = add i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
 		shuzi[top1-1].value=shuzi[top1].value+shuzi[top1-1].value;
-		sprintf(ch,"\%%%d",numb);
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 		shuzi[top1-1].name="";//叫啥都无所谓了 
 	}
 	if(c=='-')
 	{	
-		fprintf(out,"          \%%%d = sub i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
+		fprintf(out,"          %%x%d = sub i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
 		shuzi[top1-1].value=shuzi[top1-1].value-shuzi[top1].value;
-		sprintf(ch,"\%%%d",numb);
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 		shuzi[top1-1].name="";//叫啥都无所谓了 
 	}
 	if(c=='*')
 	{
-		fprintf(out,"          \%%%d = mul i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
+		fprintf(out,"          %%x%d = mul i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
 		shuzi[top1-1].value=shuzi[top1-1].value*shuzi[top1].value;
-		sprintf(ch,"\%%%d",numb);
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 		shuzi[top1-1].name="";//叫啥都无所谓了 
 	}
 	if(c=='/')
 	{
-		fprintf(out,"          \%%%d = sdiv i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
+		fprintf(out,"          %%x%d = sdiv i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
 		shuzi[top1-1].value=shuzi[top1-1].value/shuzi[top1].value;
-		sprintf(ch,"\%%%d",numb);
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 		shuzi[top1-1].name="";//叫啥都无所谓了 
 	}
 	if(c=='%')
 	{
-		fprintf(out,"          \%%%d = srem i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
+		fprintf(out,"          %%x%d = srem i32 %s,%s\n",++numb,num2.c_str(),num1.c_str());
 		shuzi[top1-1].value=shuzi[top1-1].value%shuzi[top1].value;
-		sprintf(ch,"\%%%d",numb);
+		sprintf(ch,"%%x%d",numb);
 		shuzi[top1-1].name2=ch;
 		shuzi[top1-1].type=2;
 		shuzi[top1-1].name="";//叫啥都无所谓了 
 	}
 	top1--;
 	return shuzi[top1-1].value; 
+}
+void PrintRel(int judge,ident yuan)
+{
+	char ch[10];
+	if(yuan.type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,yuan.name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		yuan.name2=ch;
+	}
+	if(yuan.type==0)
+	{
+		sprintf(ch,"%d",yuan.value);
+		yuan.name2=ch;
+	}
+	if(shuzi[0].type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+	}
+	if(shuzi[0].type==0)
+	{
+		sprintf(ch,"%d",shuzi[0].value);
+		shuzi[0].name2=ch;
+	}
+	if(judge==1)
+	{
+		fprintf(out,"          %%x%d = icmp sgt i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+	else if(judge==2)
+	{
+		fprintf(out,"          %%x%d = icmp slt i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+	else if(judge==3)
+	{
+		fprintf(out,"          %%x%d = icmp sge i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+	else if(judge==4)
+	{
+		fprintf(out,"          %%x%d = icmp sle i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+}
+void PrintEq(int judge,ident yuan)
+{
+	char ch[10];
+	if(yuan.type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,yuan.name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		yuan.name2=ch;
+	}
+	if(yuan.type==0)
+	{
+		sprintf(ch,"%d",yuan.value);
+		yuan.name2=ch;
+	}
+	if(shuzi[0].type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+	}
+	if(shuzi[0].type==0)
+	{
+		sprintf(ch,"%d",shuzi[0].value);
+		shuzi[0].name2=ch;
+	}
+	if(judge==1)
+	{
+		fprintf(out,"          %%x%d = icmp eq i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+	else if(judge==2)
+	{
+		fprintf(out,"          %%x%d = icmp ne i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+		shuzi[0].type=2;
+	}
+ } 
+void PrintLAnd(ident yuan)
+{
+	char ch[10];
+	if(yuan.type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,yuan.name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		yuan.name2=ch;
+	}
+	if(yuan.type==0)
+	{
+		sprintf(ch,"%d",yuan.value);
+		yuan.name2=ch;
+	}
+	if(shuzi[0].type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+	}
+	if(shuzi[0].type==0)
+	{
+		sprintf(ch,"%d",shuzi[0].value);
+		shuzi[0].name2=ch;
+	}
+	fprintf(out,"          %%x%d = icmp land i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+	sprintf(ch,"%%x%d",numb);
+	shuzi[0].name2=ch;
+	shuzi[0].type=2;
+}
+void PrintLOr(ident yuan)
+{
+	char ch[10];
+	if(yuan.type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,yuan.name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		yuan.name2=ch;
+	}
+	if(yuan.type==0)
+	{
+		sprintf(ch,"%d",yuan.value);
+		yuan.name2=ch;
+	}
+	if(shuzi[0].type==1)
+	{
+		fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+		sprintf(ch,"%%x%d",numb);
+		shuzi[0].name2=ch;
+	}
+	if(shuzi[0].type==0)
+	{
+		sprintf(ch,"%d",shuzi[0].value);
+		shuzi[0].name2=ch;
+	}
+	fprintf(out,"          %%x%d = icmp lor i32 %s, %s\n",++numb,yuan.name2.c_str(),shuzi[0].name2.c_str());
+	sprintf(ch,"%%x%d",numb);
+	shuzi[0].name2=ch;
+	shuzi[0].type=2;
 }
 int q[100];
 int top=0;
@@ -131,6 +285,11 @@ int Stmt();
 int Decl();
 int Blockitem();
 int FuncRParams();
+int RelExp();
+int EqExp();
+int LAndExp();
+int LOrExp();
+int Cond();
 int symbol(string s)
 {
 	if(s=="(")
@@ -209,6 +368,14 @@ int symbol(string s)
  		return 14;
  	else if(strcmp(s.c_str(),"putarray")==0)
  		return 15;
+ 	else if(strcmp(s.c_str(),"if")==0)
+ 	{
+ 		return 20;
+	}
+	else if(strcmp(s.c_str(),"else")==0)
+ 	{
+ 		return 21;
+	}
  	else
  	{
  		temp=s;
@@ -447,11 +614,11 @@ int VarDecl()
 		if(a==1)
 		{
 			numb++;
-			fprintf(out,"          \%%%d = alloca i32\n",numb);
+			fprintf(out,"          %%x%d = alloca i32\n",numb);
 			idents[++top3].type=1;
 			string name2;
 			char ch[50];
-			sprintf(ch,"\%%%d",numb);
+			sprintf(ch,"%%x%d",numb);
 			name2=ch;
 			idents[top3].name2=name2;
 			int b =Vardef();
@@ -477,8 +644,8 @@ int VarDecl()
 					}
 					else if(shuzi[0].type==1)
 					{
-						fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
-						fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[top3].name2.c_str());
+						fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+						fprintf(out,"          store i32 %%x%d, i32* %s\n",numb,idents[top3].name2.c_str());
 					}
 					idents[top3].value=shuzi[0].value;//这里可能要修改 
 				}
@@ -490,9 +657,9 @@ int VarDecl()
 				{
 					num++;
 					numb++;
-					fprintf(out,"          \%%%d = alloca i32\n",numb);
+					fprintf(out,"          %%x%d = alloca i32\n",numb);
 					idents[++top3].type=1;
-					sprintf(ch,"\%%%d",numb);
+					sprintf(ch,"%%x%d",numb);
 					name2=ch;
 					idents[top3].name2=name2;
 					int c = Vardef();
@@ -519,8 +686,8 @@ int VarDecl()
 						}
 						else if(shuzi[0].type==1)
 						{
-							fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
-							fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[top3].name2.c_str());
+							fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          store i32 %%x%d, i32* %s\n",numb,idents[top3].name2.c_str());
 						}
 						idents[top3].value=shuzi[0].value;//这里可能要修改 
 					}
@@ -622,13 +789,18 @@ int Stmt()
 	if(letter[num]==";")
 	{
 		num++;
-		return 2;
+		return 3;
 	}
 	if(Exp()>0)
 	{
+		int biaoji=0;
 		while(letter[num]=="block")
 		{
 			num++;
+		}
+		if(letter[num]=="=")
+		{
+			goto part2;
 		}
 		while(top2!=-1)
 		{
@@ -638,7 +810,7 @@ int Stmt()
 		if(letter[num]==";")
 		{
 			num++;
-			return 2;
+			return 3;
 		}
 		else
 		{
@@ -646,16 +818,55 @@ int Stmt()
 			return 0;
 		}
 	}
+	part2:
 	num=j;
 	top1=-1;
 	top2=-1;
+	if(letter[num]=="{")
+	{
+		num++;
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		if(Blockitem()>0)
+		{
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			int x=num;
+			while(Blockitem()>0)
+			{
+				while(letter[num]=="block")
+				{
+					num++;
+				}
+				x=num;
+			}
+			num=x;
+			if(letter[num]=="}")
+			{
+				num++;
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}	
+	}
+	num=j;
 	if((letter[num]>="a"&&letter[num]<="z")||(letter[num]>="A"&&letter[num]<="Z")||letter[num]=="_")
 	{
 		num=j;
 		int a = judgeword(letter[num],num);
 		if(a==6)
 		{
-			
 			if(Exp()>0)
 			{
 				while(letter[num]=="block")
@@ -677,7 +888,7 @@ int Stmt()
 						fprintf(out,"%s",shuzi[0].name2.c_str());
 					else if(shuzi[0].type==1)
 						fprintf(out,"*%s",shuzi[0].name2.c_str());
-					return 3;
+					return 5;
 				}
 				else
 				{
@@ -749,8 +960,8 @@ int Stmt()
 						}
 						else if(shuzi[0].type==1)
 						{
-							fprintf(out,"          \%%%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
-							fprintf(out,"          store i32 \%%%d, i32* %s\n",numb,idents[biao].name2.c_str());
+							fprintf(out,"          %%x%d = load i32, i32* %s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          store i32 %%x%d, i32* %s\n",numb,idents[biao].name2.c_str());
 						}
 						idents[biao].value=shuzi[0].value;
 						return 1;
@@ -776,6 +987,83 @@ int Stmt()
 				printf("%d ",a);
 				printf("9\n");
 				num = j;
+				return 0;
+			}
+		}
+		else if(a==20)
+		{
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(letter[num]=="(")
+			{
+				num++;
+				while(letter[num]=="block")
+				{
+					num++;
+				}
+				if(Cond()>0)
+				{
+					while(letter[num]=="block")
+					{
+						num++;
+					}
+					if(letter[num]==")")
+					{
+						num++;
+						while(letter[num]=="block")
+						{
+							num++;
+						}
+						if(Stmt()>0)
+						{
+							while(letter[num]=="block")
+							{
+								num++;
+							}
+							int x=num;
+							int b = judgeword(letter[num],num);
+							{
+								if(b==21)
+								{
+									while(letter[num]=="block")
+									{
+										num++;
+									}
+									if(Stmt()>0)
+									{
+										return 4;
+									}
+									else
+									{
+										return 0;
+									}
+								}
+								else
+								{
+									num=x;
+									return 4;
+								}
+							}		
+						}
+						else
+						{
+							return 0;
+						}
+					}
+					else
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
 				return 0;
 			}
 		}
@@ -927,8 +1215,8 @@ int MulExp()
 		{
 			num++;
 		}
-		if(letter[num]=="=")
-			return 0;
+//		if(letter[num]=="=")
+//			return 0;
 		while(letter[num]=="*"||letter[num]=="/"||letter[num]=="%")
 		{
 			
@@ -1137,9 +1425,9 @@ int UnaryExp()
 				}
 				if(a==10&&letter[num]==")")
 				{
-					fprintf(out,"          \%%%d = call i32 @getint()\n",++numb);
+					fprintf(out,"          %%x%d = call i32 @getint()\n",++numb);
 					char ch[50];
-					sprintf(ch,"\%%%d",numb);
+					sprintf(ch,"%%x%d",numb);
 					ident newident;
 					newident.value=0;
 					newident.name="";
@@ -1151,9 +1439,9 @@ int UnaryExp()
 				}
 				else if(a==11&&letter[num]==")")
 				{
-					fprintf(out,"          \%%%d = call i32 @getch()\n",++numb);
+					fprintf(out,"          %%x%d = call i32 @getch()\n",++numb);
 					char ch[50];
-					sprintf(ch,"\%%%d",numb);
+					sprintf(ch,"%%x%d",numb);
 					ident newident;
 					newident.value=0;
 					newident.name="";
@@ -1169,8 +1457,8 @@ int UnaryExp()
 					{
 						if(shuzi[0].type==1)
 						{
-							fprintf(out,"          \%%%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
-							fprintf(out,"          call void @putint(i32 \%%%d)\n",numb);
+							fprintf(out,"          %%x%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          call void @putint(i32 %%x%d)\n",numb);
 						}
 						else if(shuzi[0].type==0)
 							fprintf(out,"          call void @putint(i32 %d)\n",shuzi[0].value);
@@ -1191,8 +1479,8 @@ int UnaryExp()
 					{
 						if(shuzi[0].type==1)
 						{
-							fprintf(out,"          \%%%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
-							fprintf(out,"          call void @putch(i32 \%%%d)\n",numb);
+							fprintf(out,"          %%x%d = load i32, i32* %2s\n",++numb,shuzi[0].name2.c_str());
+							fprintf(out,"          call void @putch(i32 %%x%d)\n",numb);
 						}
 						else if(shuzi[0].type==0)
 							fprintf(out,"          call void @putch(i32 %d)\n",shuzi[0].value);
@@ -1242,6 +1530,223 @@ int UnaryExp()
 		return 1;
 	else
 		return 0;
+}
+int RelExp()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	int j=num;
+	if(AddExp()>0)
+	{
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		while(letter[num]==">"||letter[num]=="<")
+		{
+			while(top2!=-1)
+			{
+				operate(op[top2]);
+				top2--;
+			}
+			int judge;
+			char ch[10];
+			ident yuan=shuzi[0];
+			top1=-1;
+			top2=-1;
+			if(letter[num]==">")
+			{
+				judge=1;
+			}
+			else if(letter[num]=="<")
+			{
+				judge=2;
+			}
+			num++;
+			if(letter[num]=="=")
+			{
+				judge+=2;
+				num++;
+			}
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(AddExp()<=0)
+			{
+				return 0;
+			}
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			PrintRel(judge,yuan);
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return 1;
+}
+int EqExp()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	int j=num;
+	if(RelExp()>0)
+	{
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		while((letter[num]=="="||letter[num]=="!")&&letter[num+1]=="=")
+		{
+			int judge=1;
+			while(top2!=-1)
+			{
+				operate(op[top2]);
+				top2--;
+			}
+			char ch[10];
+			ident yuan=shuzi[0];
+			top1=-1;
+			top2=-1;
+			if(letter[num]=="=")
+			{
+				judge=1;
+			}
+			else if(letter[num]=="!")
+			{
+				judge=2;
+			}
+			num+=2;
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(RelExp()<=0)
+			{
+				return 0;
+			}
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			PrintEq(judge,yuan);
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return 1;
+}
+int LAndExp()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	int j=num;
+	if(EqExp()>0)
+	{
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		while(letter[num]=="&"&&letter[num+1]=="&")
+		{
+			while(top2!=-1)
+			{
+				operate(op[top2]);
+				top2--;
+			}
+			char ch[10];
+			ident yuan=shuzi[0];
+			top1=-1;
+			top2=-1;
+			num+=2;
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(EqExp()<=0)
+			{
+				return 0;
+			}
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			PrintLAnd(yuan);
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return 1;
+}
+int LOrExp()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	if(LAndExp()>0)
+	{
+		while(letter[num]=="block")
+		{
+			num++;
+		}
+		while(letter[num]=="|"&&letter[num+1]=="|")
+		{
+			char ch[10];
+			ident yuan=shuzi[0];
+			top1=-1;
+			top2=-1;
+			num+=2;
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			if(LAndExp()<=0)
+			{
+				return 0;
+			}
+			while(letter[num]=="block")
+			{
+				num++;
+			}
+			PrintLOr(yuan);
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return 1;
+}
+int Cond()
+{
+	while(letter[num]=="block")
+	{
+		num++;
+	}
+	if(LOrExp()>0)
+	{
+		return 1;
+	}
+	return 0;
 }
 int FuncRParams()
 {
